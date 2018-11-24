@@ -1,7 +1,6 @@
 package com.etl.etl.model.entities;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 
@@ -21,16 +20,16 @@ public class Product {
     private String name;
     private Double price;
     private String category;
-    private String basicInformations;
 
-    public Product(Integer id, Integer productId, String name, Double price, String category, String basicInformations) {
+    public Product(Integer id, Integer productId, String name, Double price, String category) {
         this.id = id;
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.category = category;
-        this.basicInformations = basicInformations;
     }
+
+
 
     public Integer getProductId() {
         return productId;
@@ -70,13 +69,5 @@ public class Product {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    public String getBasicInformations() {
-        return basicInformations;
-    }
-
-    public void setBasicInformations(String basicInformations) {
-        this.basicInformations = basicInformations;
     }
 }
