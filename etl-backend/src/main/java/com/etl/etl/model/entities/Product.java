@@ -1,4 +1,4 @@
-package com.etl.etl.model;
+package com.etl.etl.model.entities;
 
 import lombok.Data;
 
