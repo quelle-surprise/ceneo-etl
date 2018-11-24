@@ -11,11 +11,11 @@ public class ProductMock {
     private static Map<Integer, Product> products = new HashMap<>();
 
     static {
-        Product a = new Product(1, 321321, "PS4", 1455.25, "Consoles", "Some informations");
+        Product a = new Product(1, 321321, "PS4", 1455.25, "Consoles");
         products.put(1, a);
-        Product b = new Product(2, 321321, "PS4", 1455.25, "Consoles", "Some informations");
+        Product b = new Product(2, 321321, "PS4", 1455.25, "Consoles");
         products.put(2, b);
-        Product c = new Product(3, 321321, "PS4", 1455.25, "Consoles", "Some informations");
+        Product c = new Product(3, 321321, "PS4", 1455.25, "Consoles");
         products.put(3, c);
     }
 
