@@ -1,6 +1,8 @@
 package com.etl.etl.model.repository;
 
-public class ReviewRepository {
-    public static class ProductRepository {
-    }
+import com.etl.etl.model.entities.Review;
+import org.springframework.data.repository.CrudRepository;
+
+public interface ReviewRepository extends CrudRepository<Review,Long> {
+    //TODO: Implement queries for Reviews
 }
