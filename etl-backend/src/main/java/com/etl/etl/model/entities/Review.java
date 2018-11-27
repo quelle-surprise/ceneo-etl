@@ -16,11 +16,13 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-
+    @Column
     private Integer productId;
-
+    @Column
     private String reviewContent;
+    @Column
     private String nameOfReviewer;
+    @Column
     private String reviewScore;
 
 }
