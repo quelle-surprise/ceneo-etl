@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import './App.css';
-import Typography from "@material-ui/core/Typography/Typography";
+import { TextButton as Button } from './components/common/TextButton.js';
+import MainMenu from './components/menu/MainMenu.js';
+import { BrowserRouter as Router} from 'react-router-dom';
+import Home from './containers/Home.js';
+import Database from './containers/Database.js';
+import {HOME_URL, DATABASE_URL} from './utils/routes.js'
+import createRoutes from './utils/routes.js';
 
 class App extends Component {
   render() {
     return (
-        <Typography component="h2" variant="h1" gutterBottom>
-              Ceneo ETL - frontend
-        </Typography>
+        <Router>
+          <div>
+            <MainMenu />
+            {createRoutes()}
+          </div>
+        </Router>
     );
   }
 }
