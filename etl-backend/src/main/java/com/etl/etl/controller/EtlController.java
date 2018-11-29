@@ -17,8 +17,8 @@ public class EtlController {
     private DataWarehouseServiceImpl dataWarehouseServiceImpl;
 
     @RequestMapping(value = "products", method = RequestMethod.GET)
-    public List<Product> list() {
-        return ProductMock.list();
+    public Iterable<Product> list() {
+        return dataWarehouseServiceImpl.listAllProducts();
     }
 
     @GetMapping(value = "products/{productId}")

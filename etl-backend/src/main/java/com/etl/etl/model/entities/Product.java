@@ -1,9 +1,13 @@
 package com.etl.etl.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name="products")
@@ -21,6 +25,10 @@ public class Product {
     private String lowestPrice;
     @Column
     private String category;
+    @OneToMany (mappedBy = "product")
+    @Fetch(FetchMode.JOIN)
+    @JsonManagedReference
+    private Set<Review> reviews;
 
     public Product(Integer productId, String productName, String lowestPrice, String category) {
         this.productId = productId;
