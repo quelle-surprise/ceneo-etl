@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
-import { WHITE, PRIMARY, SECONDARY, TRANSPARENT_GREY } from '../../utils/colors-const.js';
 import PropTypes from "prop-types";
 
 const StyledButton = styled(Button)`
@@ -14,10 +13,10 @@ const StyledButton = styled(Button)`
 `;
 
 export const TextButton = (props) => {
-    const {label, color, ...rest} = props;
+    const {color, ...rest} = props;
 
     return <StyledButton {...rest} color={color} />
-}
+};
 
 TextButton.propTypes = {
     label: PropTypes.string,
