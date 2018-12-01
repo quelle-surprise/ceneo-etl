@@ -1,5 +1,5 @@
-import { createMuiTheme } from '@material-ui/core/styles';
-import { PRIMARY, SECONDARY, WHITE } from './colors-const';
+import {createMuiTheme} from '@material-ui/core/styles';
+import {PRIMARY, SECONDARY, WHITE} from './colors-const';
 
 export const mainTheme = createMuiTheme({
     palette: {
@@ -14,5 +14,3 @@ export const mainTheme = createMuiTheme({
     },
     shadows: ["none"]
 });
-
-export default mainTheme;
