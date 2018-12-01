@@ -6,6 +6,7 @@ import com.etl.etl.model.repository.ProductRepository;
 import com.etl.etl.model.repository.ReviewRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
@@ -80,8 +81,9 @@ public class DataWarehouseServiceImpl implements DataWarehouseService {
     }
 
     @Override
-    public Product loadProductData(Product transformedProductData) {
-        return productRepository.save(transformedProductData);
+    public void loadProductData(Product transformedProductData) {
+        productRepository.save(transformedProductData);
+        LOG.info("Product has been successfully added to database");
     }
 
     @Override
@@ -100,17 +102,44 @@ public class DataWarehouseServiceImpl implements DataWarehouseService {
     }
 
     @Override
-    public Elements extractReviewData(Integer productId) {
-        return null;
+    public Elements extractReviewData(Integer productId) throws IOException {
+        Elements reviewElements = new Elements();
+        Document document = Jsoup.connect("https://www.ceneo.pl/" + productId + "#tab=reviews").get();
+        int numberOfReviews = Integer.parseInt(document.select(".product-reviews-numbers span:nth-child(2)").text());
+        double numberOfPages = Math.ceil(numberOfReviews/10);
+        if(numberOfPages < 1) {
+            return document.getAllElements();
+        } else {
+            for(int i = 1; i<=numberOfPages; i++){
+                Document doc = Jsoup.connect("https://www.ceneo.pl/" + productId + "/opinie-" + i).get();
+                reviewElements.addAll(doc.select(".show-review-content"));
+            }
+            return reviewElements;
+        }
     }
 
     @Override
-    public ArrayList<Review> transformReviewData(Elements extractReviewData) {
-        return null;
+    public ArrayList<Review> transformReviewData(Elements extractedReviewData) {
+        ArrayList<Review> reviews = new ArrayList<>();
+        for(Element element: extractedReviewData) {
+            Review review = new Review();
+            String reviewContent = element.select(".product-review-body").text();
+            String nameOfReviewer = element.select(".reviewer-name-line").text();
+            String reviewScore = element.select(".review-score-count").text();
+            review.setReviewContent(reviewContent);
+            review.setNameOfReviewer(nameOfReviewer);
+            review.setReviewScore(reviewScore);
+
+            reviews.add(review);
+        }
+        return reviews;
     }
 
     @Override
-    public Review loadReviewData(ArrayList<Review> transformReviewData) {
-        return null;
+    public void loadReviewData(ArrayList<Review> transformedReviewData) {
+        for (Review review : transformedReviewData) {
+            reviewRepository.save(review);
+            LOG.info(review.toString());
+        }
     }
 }

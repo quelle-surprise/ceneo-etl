@@ -27,5 +27,4 @@ public class Review {
     private String nameOfReviewer;
     @Column
     private String reviewScore;
-
 }
