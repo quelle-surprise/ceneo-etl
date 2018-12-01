@@ -8,8 +8,8 @@ import {DATABASE_URL, HOME_URL} from '../../utils/routes';
 
 const Wrapper = styled.div`
     background-color: ${WHITE};
-    border-bottom: 2px solid ${LIGHT_GREY};
     margin-bottom: 20px;
+    box-shadow: 0 4px 15px -2px ${LIGHT_GREY};
 `;
 
 export default class MainMenu extends Component {
@@ -28,4 +28,3 @@ export default class MainMenu extends Component {
         )
     }
 }
-
