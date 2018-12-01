@@ -15,7 +15,7 @@ const StyledButton = styled(Button)`
 export const TextButton = (props) => {
     const {color, ...rest} = props;
 
-    return <StyledButton {...rest} color={color} />
+    return <StyledButton {...rest} color={color}/>
 };
 
 TextButton.propTypes = {
@@ -23,7 +23,7 @@ TextButton.propTypes = {
     color: PropTypes.string,
     variant: PropTypes.string,
     disabled: PropTypes.bool,
-    onClick: PropTypes.func,
+    onClick: PropTypes.func
 };
 
 TextButton.defaultProps = {
