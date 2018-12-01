@@ -4,6 +4,7 @@ import com.etl.etl.model.entities.Product;
 import com.etl.etl.model.entities.Review;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public interface DataWarehouseService {
@@ -20,7 +21,7 @@ public interface DataWarehouseService {
 
     Product transformProductData(Elements extractProductData);
 
-    Product loadProductData(Product transformedProductData);
+    void loadProductData(Product transformedProductData);
 
     Iterable<Review> listAllReviews();
 
@@ -28,11 +29,11 @@ public interface DataWarehouseService {
 
     Review getReviewById(Integer id);
 
-    Elements extractReviewData(Integer productId);
+    Elements extractReviewData(Integer productId) throws IOException;
 
-    ArrayList<Review> transformReviewData(Elements extractReviewData);
+    ArrayList<Review> transformReviewData(Elements extractedReviewData);
 
-    Review loadReviewData(ArrayList<Review> transformReviewData);
+    void loadReviewData(ArrayList<Review> transformedReviewData);
 
 
 

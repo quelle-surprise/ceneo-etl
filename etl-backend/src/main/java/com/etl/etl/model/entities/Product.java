@@ -15,7 +15,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class Product {
 
-
     @Id
     @Column
     private Integer productId;
@@ -30,12 +29,6 @@ public class Product {
     @JsonManagedReference
     private Set<Review> reviews;
 
-    public Product(Integer productId, String productName, String lowestPrice, String category) {
-        this.productId = productId;
-        this.productName = productName;
-        this.lowestPrice = lowestPrice;
-        this.category = category;
-    }
 
     public Integer getProductId() {
         return productId;
