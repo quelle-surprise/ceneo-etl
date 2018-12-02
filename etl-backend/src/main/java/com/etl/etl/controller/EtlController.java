@@ -2,6 +2,7 @@ package com.etl.etl.controller;
 
 
 
+import com.etl.etl.model.entities.Review;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
+
 import com.etl.etl.model.entities.Product;
 import com.etl.etl.service.DataWarehouseServiceImpl;
 
@@ -25,24 +28,33 @@ public class EtlController {
     private DataWarehouseServiceImpl dataWarehouseServiceImpl;
 
     @RequestMapping(value = "products", method = RequestMethod.GET)
-    public Iterable<Product> list() {
+    public Iterable<Product> listAllProducts() {
         return dataWarehouseServiceImpl.listAllProducts();
     }
 
-    @GetMapping(value = "products/{productId}")
+    @GetMapping(value = "product/{productId}")
     public Product getProductById(@PathVariable Integer productId) {
         return dataWarehouseServiceImpl.getProductById(productId);
     }
 
     //TODO : To improve
     @RequestMapping(value = "product/{productId}", method = RequestMethod.POST)
-    public void entireEtlProcess(@PathVariable Integer productId) throws IOException, InterruptedException {
-        Elements rawProductData = dataWarehouseServiceImpl.extractProductData(productId);
-        Product transformedProductData = dataWarehouseServiceImpl.transformProductData(rawProductData);
-        dataWarehouseServiceImpl.loadProductData(transformedProductData);
+    public Product entireEtlProcess(@PathVariable Integer productId) throws IOException {
         Elements rawReviewsData = dataWarehouseServiceImpl.extractReviewData(productId);
-        ArrayList<Review> transformedReviewData = dataWarehouseServiceImpl.transformReviewData(rawReviewsData);
-        dataWarehouseServiceImpl.loadReviewData(transformedReviewData);
+        Elements rawProductData = dataWarehouseServiceImpl.extractProductData(productId);
+        Product transformedProductData = dataWarehouseServiceImpl.transformData(rawProductData, rawReviewsData);
+        Set<Review> transformedReviewData = dataWarehouseServiceImpl.transformReviewData(rawReviewsData, transformedProductData);
+        return dataWarehouseServiceImpl.loadProductData(transformedProductData, transformedReviewData);
+    }
+
+    @RequestMapping(value = "product/delete/{productId}", method = RequestMethod.DELETE)
+    public void deleteProduct(@PathVariable Integer productId) {
+        dataWarehouseServiceImpl.deleteProduct(productId);
+    }
+
+    @RequestMapping(value = "product/delete", method = RequestMethod.DELETE)
+    public void deleteAllProducts() {
+        dataWarehouseServiceImpl.deleteAllProducts();
     }
 }
 

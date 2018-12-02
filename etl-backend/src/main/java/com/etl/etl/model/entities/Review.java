@@ -12,12 +12,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "reviews")
 @Getter @Setter
+@NoArgsConstructor
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
     @JsonBackReference
     private Product product;
@@ -27,4 +28,5 @@ public class Review {
     private String nameOfReviewer;
     @Column
     private String reviewScore;
+
 }
