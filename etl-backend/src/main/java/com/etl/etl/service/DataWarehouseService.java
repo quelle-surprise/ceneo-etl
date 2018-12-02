@@ -6,6 +6,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
 
 public interface DataWarehouseService {
 
@@ -13,29 +14,17 @@ public interface DataWarehouseService {
 
     Product getProductById(Integer productId);
 
-    Product saveProduct(Product product);
-
     void deleteProduct(Integer productId);
 
     Elements extractProductData(Integer productId);
 
-    Product transformProductData(Elements extractProductData);
+    Product transformData(Elements extractedProductData, Elements extractedReviewData);
 
-    void loadProductData(Product transformedProductData);
-
-    Iterable<Review> listAllReviews();
-
-    Review saveReview(Review review);
-
-    Review getReviewById(Integer id);
+    Product loadProductData(Product transformedProductData, Set<Review> transformedReviewData);
 
     Elements extractReviewData(Integer productId) throws IOException;
 
-    ArrayList<Review> transformReviewData(Elements extractedReviewData);
+    Set<Review> transformReviewData(Elements extractedReviewData, Product transformData);
 
-    void loadReviewData(ArrayList<Review> transformedReviewData);
-
-
-
-
+    void deleteAllProducts();
 }
