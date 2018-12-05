@@ -3,6 +3,7 @@ package com.etl.etl.service;
 import com.etl.etl.model.entities.Product;
 import com.etl.etl.model.entities.Review;
 import org.jsoup.select.Elements;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,15 +17,13 @@ public interface DataWarehouseService {
 
     void deleteProduct(Integer productId);
 
-    Elements extractProductData(Integer productId);
-
-    Product transformData(Elements extractedProductData, Elements extractedReviewData);
-
-    Product loadProductData(Product transformedProductData, Set<Review> transformedReviewData);
-
-    Elements extractReviewData(Integer productId) throws IOException;
-
-    Set<Review> transformReviewData(Elements extractedReviewData, Product transformData);
-
     void deleteAllProducts();
+
+    ResponseEntity<String> extractData(Integer productId) throws Exception;
+
+    ResponseEntity<String> transformData();
+
+    ResponseEntity<String> loadData();
+
+
 }
