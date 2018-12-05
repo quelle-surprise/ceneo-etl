@@ -29,4 +29,13 @@ public class Review {
     @Column
     private String reviewScore;
 
+    @Override
+    public String toString() {
+        return "Review{" +
+                "id=" + id +
+                ", reviewContent='" + reviewContent + '\'' +
+                ", nameOfReviewer='" + nameOfReviewer + '\'' +
+                ", reviewScore='" + reviewScore + '\'' +
+                '}';
+    }
 }

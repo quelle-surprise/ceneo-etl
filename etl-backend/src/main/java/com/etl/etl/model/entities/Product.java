@@ -68,4 +68,14 @@ public class Product {
     public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", lowestPrice='" + lowestPrice + '\'' +
+                ", category='" + category + '\'' +
+                '}';
+    }
 }
