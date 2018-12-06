@@ -8,6 +8,7 @@ import com.etl.etl.model.entities.Review;
 import com.etl.etl.service.DataWarehouseService;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import java.util.Set;
 
 import com.etl.etl.model.entities.Product;
 import com.etl.etl.service.DataWarehouseServiceImpl;
+import org.springframework.web.client.HttpServerErrorException;
 
 @RestController
 @CrossOrigin
@@ -46,13 +48,14 @@ public class EtlController {
     }
 
     //TODO : To improve
-    @RequestMapping(value = "/etl/{productId}", method = RequestMethod.POST)
-    public Product entireEtlProcess(@PathVariable Integer productId) throws IOException {
+    @RequestMapping(value = "/etl/{productId}", method = RequestMethod.GET)
+    public ResponseEntity<Product> entireEtlProcess(@PathVariable Integer productId) throws IOException {
+        if (dataWarehouseServiceImpl.productExist(productId)) throw new HttpServerErrorException(HttpStatus.CONFLICT, "Product already exist!");
         Elements rawReviewsData = reviewDAO.extractReviewData(productId);
         Elements rawProductData = productDAO.extractProductData(productId);
         Product transformedProductData = productDAO.transformProductData(rawProductData);
         Set<Review> transformedReviewData = reviewDAO.transformReviewData(rawReviewsData, transformedProductData);
-        return productDAO.loadProductData(transformedProductData, transformedReviewData);
+        return new ResponseEntity(productDAO.loadProductData(transformedProductData, transformedReviewData), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/product/delete/{productId}", method = RequestMethod.DELETE)
@@ -75,7 +78,7 @@ public class EtlController {
         return dataWarehouseServiceImpl.transformData();
     }
 
-    @RequestMapping(value = "/load", method = RequestMethod.POST)
+    @RequestMapping(value = "/load", method = RequestMethod.GET)
     public ResponseEntity<String> loadData() {
         return dataWarehouseServiceImpl.loadData();
     }

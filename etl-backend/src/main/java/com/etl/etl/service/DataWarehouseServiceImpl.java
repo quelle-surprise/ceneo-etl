@@ -5,12 +5,13 @@ import com.etl.etl.model.dao.ReviewDAO;
 import com.etl.etl.model.entities.Product;
 import com.etl.etl.model.entities.Review;
 import com.etl.etl.model.repository.ProductRepository;
-import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.client.HttpServerErrorException;
 
 
 import java.io.IOException;
@@ -46,6 +47,10 @@ public class DataWarehouseServiceImpl implements DataWarehouseService {
         return productRepository.getOne(id);
     }
 
+    public boolean productExist(Integer id) {
+        return productRepository.existsById(id);
+    }
+
     @Override
     public void deleteProduct(Integer productId) {
         productRepository.deleteById(productId);
@@ -58,13 +63,14 @@ public class DataWarehouseServiceImpl implements DataWarehouseService {
 
     @Override
     public ResponseEntity<String> extractData(Integer productId) throws Exception {
+        if (productExist(productId)) throw new HttpServerErrorException(HttpStatus.CONFLICT, "Product already exist!");
         if (extractedProductData == null && extractedReviewData == null) {
             extractedProductData = productDAO.extractProductData(productId);
             extractedReviewData = reviewDAO.extractReviewData(productId);
         } else {
             return new ResponseEntity<>("Error happen while extracting data", HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<>("Data has been extracted successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Data has been extracted successfully\n", HttpStatus.OK);
     }
 
     @Override
