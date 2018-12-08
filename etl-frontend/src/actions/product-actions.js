@@ -16,7 +16,7 @@ export function fetchProducts() {
 
 export function addProduct(productId) {
     return dispatch =>
-        axios.post(`${PRODUCT_ENDPOINT}/${productId}`)
+        axios.get(`${PRODUCT_ENDPOINT}/${productId}`)
             .then(response => dispatch({
                 type: API_SUCCESS,
                 payload: {

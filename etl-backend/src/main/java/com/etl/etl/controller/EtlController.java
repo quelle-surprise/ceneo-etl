@@ -1,11 +1,11 @@
 package com.etl.etl.controller;
 
 
-
 import com.etl.etl.model.dao.ProductDAO;
 import com.etl.etl.model.dao.ReviewDAO;
 import com.etl.etl.model.entities.Review;
 import com.etl.etl.service.DataWarehouseService;
+
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +23,7 @@ import java.util.Set;
 
 import com.etl.etl.model.entities.Product;
 import com.etl.etl.service.DataWarehouseServiceImpl;
+
 import org.springframework.web.client.HttpServerErrorException;
 
 @RestController
@@ -50,7 +51,8 @@ public class EtlController {
     //TODO : To improve
     @RequestMapping(value = "/etl/{productId}", method = RequestMethod.GET)
     public ResponseEntity<Product> entireEtlProcess(@PathVariable Integer productId) throws IOException {
-        if (dataWarehouseServiceImpl.productExist(productId)) throw new HttpServerErrorException(HttpStatus.CONFLICT, "Product already exist!");
+        if (dataWarehouseServiceImpl.productExist(productId))
+            throw new HttpServerErrorException(HttpStatus.CONFLICT, "Product already exist!");
         Elements rawReviewsData = reviewDAO.extractReviewData(productId);
         Elements rawProductData = productDAO.extractProductData(productId);
         Product transformedProductData = productDAO.transformProductData(rawProductData);
