@@ -28,6 +28,7 @@ public class ProductDAO {
 
     public Elements extractProductData(Integer productId) throws IOException {
         Document doc = Jsoup.connect("https://www.ceneo.pl/" + productId + "#tab=spec").get();
+
         return doc.getAllElements();
     }
 
@@ -38,7 +39,7 @@ public class ProductDAO {
         Integer productId = Integer.parseInt(extractedProductData.attr("data-productid"));
         String productName = extractedProductData.select("h1.product-name").text();
         String lowestPrice = extractedProductData.select(".price").attr("content");
-        String category = extractedProductData.select(".breadcrumbs .breadcrumb").text();
+        String category = extractedProductData.select(".breadcrumb").text();
 
         product.setProductId(productId);
         product.setProductName(productName);

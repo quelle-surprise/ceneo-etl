@@ -21,7 +21,9 @@ public interface DataWarehouseService {
 
     ResponseEntity<String> extractData(Integer productId) throws Exception;
 
-    ResponseEntity<String> transformData();
+    ResponseEntity<String> extractDataWithHtml(Integer productId) throws Exception;
+
+    ResponseEntity<Product> transformData();
 
     ResponseEntity<String> loadData();
 

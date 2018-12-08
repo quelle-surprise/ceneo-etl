@@ -70,26 +70,40 @@ public class DataWarehouseServiceImpl implements DataWarehouseService {
         } else {
             return new ResponseEntity<>("Error happen while extracting data", HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<>("Data has been extracted successfully\n", HttpStatus.OK);
+        return new ResponseEntity<>("Data has been extracted successfully", HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<String> transformData() {
+    public ResponseEntity<String> extractDataWithHtml(Integer productId) throws Exception {
+        if (productExist(productId)) throw new HttpServerErrorException(HttpStatus.CONFLICT, "Product already exist!");
+        if (extractedProductData == null && extractedReviewData == null) {
+            extractedProductData = productDAO.extractProductData(productId);
+            extractedReviewData = reviewDAO.extractReviewData(productId);
+        } else {
+            return new ResponseEntity<>("Error happen while extracting data", HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>("Data has been extracted successfully\nExtracted product data: " + extractedProductData + "Extracted review data: \n" + extractedReviewData, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Product> transformData() {
         LOG.info("Extracted product data: " + extractedProductData);
         LOG.info("Extracted review data: " + extractedReviewData);
         if (extractedReviewData != null && extractedProductData != null) {
             transformedProductData = productDAO.transformProductData(extractedProductData);
             if (transformedProductData == null) {
-                return new ResponseEntity<>("Error happens while transforming data", HttpStatus.CONFLICT);
+                throw new HttpServerErrorException(HttpStatus.CONFLICT, "Error happens while transforming data");
             }
             transformedReviewData = reviewDAO.transformReviewData(extractedReviewData, transformedProductData);
 
         } else {
-            new ResponseEntity<>("It looks that there is no data to extract!", HttpStatus.CONFLICT);
+            throw new HttpServerErrorException(HttpStatus.CONFLICT, "It looks that there is no data to extract!");
         }
-        return new ResponseEntity<>("Data has been transformed successfully\n Transformed Product Data: " + transformedProductData.toString()
-                + "" +
-                "\n Transformed Review Data: " + transformedReviewData.toString(), HttpStatus.OK);
+//        return new ResponseEntity<>("Data has been transformed successfully\n Transformed Product Data: " + transformedProductData.toString()
+//                + "" +
+//                "\n Transformed Review Data: " + transformedReviewData.toString(), HttpStatus.OK);
+        transformedProductData.setReviews(transformedReviewData);
+        return new ResponseEntity<>(transformedProductData, HttpStatus.OK);
     }
     @Override
     public ResponseEntity<String> loadData() {

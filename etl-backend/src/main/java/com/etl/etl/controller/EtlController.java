@@ -75,8 +75,13 @@ public class EtlController {
         return dataWarehouseServiceImpl.extractData(productId);
     }
 
+    @RequestMapping(value = "/extract2/{productId}", method = RequestMethod.GET)
+    public ResponseEntity<String> extractDataWithHtml(@PathVariable Integer productId) throws Exception {
+        return dataWarehouseServiceImpl.extractData(productId);
+    }
+
     @RequestMapping(value = "/transform", method = RequestMethod.GET)
-    public ResponseEntity<String> transformData() {
+    public ResponseEntity<Product> transformData() {
         return dataWarehouseServiceImpl.transformData();
     }
 
