@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import MaterialTable from 'material-table';
 import IconButton from "@material-ui/core/IconButton";
 import RateReview from "@material-ui/icons/RateReview";
+import {LinearProgress} from "@material-ui/core/index";
 
 const productsColumns = [
     {title: 'ID', field: 'productId'},
@@ -45,30 +46,31 @@ class Database extends Component {
         const {products} = this.props;
 
         return (
-            <MaterialTable
-                columns={productsColumns}
-                data={products}
-                title="Products"
-                options={{
-                    columnsButton: true,
-                    exportButton: true,
-                    selection: true,
-                    filtering: true,
-                    pageSize: 8
-                }}
-                actions={[
-                    {
-                        icon: 'delete_forever',
-                        tooltip: 'Delete selected',
-                        onClick: (event, rows) => {
-                            // TODO: implement deletion
+            products ?
+                <MaterialTable
+                    columns={productsColumns}
+                    data={products}
+                    title="Products"
+                    options={{
+                        columnsButton: true,
+                        exportButton: true,
+                        selection: true,
+                        filtering: true,
+                        pageSize: 8
+                    }}
+                    actions={[
+                        {
+                            icon: 'delete_forever',
+                            tooltip: 'Delete selected',
+                            onClick: (event, rows) => {
+                                // TODO: implement deletion
+                            },
                         },
-                    },
-                ]}
-                localization={{
-                    actions: 'Reviews'
-                }}
-            />
+                    ]}
+                    localization={{
+                        actions: 'Reviews'
+                    }}
+                /> : <LinearProgress/>
         );
     }
 }

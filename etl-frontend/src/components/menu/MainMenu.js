@@ -9,7 +9,7 @@ import {DATABASE_URL, HOME_URL} from '../../utils/routes';
 const Wrapper = styled.div`
     background-color: ${WHITE};
     margin-bottom: 20px;
-    box-shadow: 0 4px 15px -2px ${LIGHT_GREY};
+    border-bottom: 1px solid ${LIGHT_GREY};
 `;
 
 export default class MainMenu extends Component {
