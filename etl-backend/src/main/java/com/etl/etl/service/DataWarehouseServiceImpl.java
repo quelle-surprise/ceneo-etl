@@ -64,24 +64,30 @@ public class DataWarehouseServiceImpl implements DataWarehouseService {
     @Override
     public ResponseEntity<String> extractData(Integer productId) throws Exception {
         if (productExist(productId)) throw new HttpServerErrorException(HttpStatus.CONFLICT, "Product already exist!");
-        if (extractedProductData == null && extractedReviewData == null) {
-            extractedProductData = productDAO.extractProductData(productId);
-            extractedReviewData = reviewDAO.extractReviewData(productId);
-        } else {
-            return new ResponseEntity<>("Error happen while extracting data", HttpStatus.CONFLICT);
-        }
+
+        extractedProductData = null;
+        extractedReviewData = null;
+        transformedProductData = null;
+        transformedReviewData = null;
+
+        extractedProductData = productDAO.extractProductData(productId);
+        extractedReviewData = reviewDAO.extractReviewData(productId);
+
         return new ResponseEntity<>("Data has been extracted successfully", HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<String> extractDataWithHtml(Integer productId) throws Exception {
         if (productExist(productId)) throw new HttpServerErrorException(HttpStatus.CONFLICT, "Product already exist!");
-        if (extractedProductData == null && extractedReviewData == null) {
-            extractedProductData = productDAO.extractProductData(productId);
-            extractedReviewData = reviewDAO.extractReviewData(productId);
-        } else {
-            return new ResponseEntity<>("Error happen while extracting data", HttpStatus.CONFLICT);
-        }
+
+        extractedProductData = null;
+        extractedReviewData = null;
+        transformedProductData = null;
+        transformedReviewData = null;
+
+        extractedProductData = productDAO.extractProductData(productId);
+        extractedReviewData = reviewDAO.extractReviewData(productId);
+
         return new ResponseEntity<>("Data has been extracted successfully\nExtracted product data: " + extractedProductData + "Extracted review data: \n" + extractedReviewData, HttpStatus.OK);
     }
 
