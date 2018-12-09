@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {addProduct, fetchProducts} from "../actions/product-actions";
+import {fetchProducts} from "../actions/product-actions";
 import PropTypes from "prop-types";
 import MaterialTable from 'material-table';
 import IconButton from "@material-ui/core/IconButton";
