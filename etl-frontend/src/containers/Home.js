@@ -9,7 +9,7 @@ import Wrapper from "../components/home/Wrapper";
 import Form from "../components/home/Form";
 import Image from "../components/home/Image";
 import {PopUp} from "../components/common/PopUp";
-import {DATABASE_URL} from "../utils/routes";
+import {TRANSFORM_URL} from "../utils/routes";
 
 const ADD_PRODUCT_ACTION_ID = 'add.product.action.id';
 const EXTRACT_PRODUCT_ACTION_ID = 'extract.product.action.id';
@@ -89,7 +89,7 @@ class Home extends Component {
             <PopUp
                 openPopUp={this.state.openErrorPopUp}
                 onPopUpClose={this.handlePopUpClose}
-                title="ERROR"
+                title="ERROR ☹️"
                 content={requestResult.message}
             />
         )
@@ -104,7 +104,7 @@ class Home extends Component {
                     <PopUp
                         openPopUp={this.state.openSuccessPopUp}
                         onPopUpClose={this.handlePopUpClose}
-                        title="SUCCESS"
+                        title="SUCCESS 🥳"
                         content={"Added 1 item with " + requestResult.data.reviews.length + " reviews"}
                     />
                 );
@@ -112,10 +112,10 @@ class Home extends Component {
                 return (
                     <PopUp
                         openPopUp={this.state.openSuccessPopUp}
-                        title="SUCCESS"
+                        title="SUCCESS 🥳"
                         content={requestResult.message}
                         buttonLabel="Transform"
-                        buttonRedirect={DATABASE_URL}
+                        buttonRedirect={TRANSFORM_URL}
                     />
                 );
         }
