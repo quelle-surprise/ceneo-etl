@@ -39,7 +39,7 @@ public class ProductDAO {
         Integer productId = Integer.parseInt(extractedProductData.attr("data-productid"));
         String productName = extractedProductData.select("h1.product-name").text();
         String lowestPrice = extractedProductData.select(".price").attr("content");
-        String category = extractedProductData.select(".breadcrumb").text();
+        String category = extractedProductData.attr("data-gacategoryname").replaceFirst("/", "");
 
         product.setProductId(productId);
         product.setProductName(productName);
