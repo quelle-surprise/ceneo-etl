@@ -19,7 +19,7 @@ const productsColumns = [
         field: 'successScore',
         render: rowData => {
             return (
-                <IconButton href={`${REVIEWS_URL}/${rowData.productId}`}>
+                <IconButton href={rowData.productId}>
                     <RateReview/>
                 </IconButton>
             )

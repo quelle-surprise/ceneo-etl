@@ -17,11 +17,9 @@ const reviewsColumns = [
     {title: 'Score', field: 'reviewScore'},
 ];
 
-
 @connect(
     store => ({product: store.product.product}),
     dispatch => (bindActionCreators({fetchProduct}, dispatch)))
-
 class ReviewsTable extends Component {
 
     static propTypes = {
@@ -32,7 +30,6 @@ class ReviewsTable extends Component {
     componentWillMount() {
         const {fetchProduct} = this.props;
         fetchProduct(this.props.match.params.id);
-        console.log("cokolwiek");
     }
 
     render() {
