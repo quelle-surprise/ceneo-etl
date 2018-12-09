@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {fetchProducts} from "../actions/product-actions";
+import {fetchProducts, deleteProduct} from "../actions/product-actions";
 import PropTypes from "prop-types";
 import MaterialTable from 'material-table';
 import IconButton from "@material-ui/core/IconButton";
 import RateReview from "@material-ui/icons/RateReview";
 import {LinearProgress} from "@material-ui/core/index";
+import {REVIEWS_URL} from "../utils/routes";
 
 const productsColumns = [
     {title: 'ID', field: 'productId'},
@@ -18,8 +19,7 @@ const productsColumns = [
         field: 'successScore',
         render: rowData => {
             return (
-                // TODO: Go to reviews table for rowData.productId
-                <IconButton>
+                <IconButton href={`${REVIEWS_URL}/${rowData.productId}`}>
                     <RateReview/>
                 </IconButton>
             )
@@ -29,12 +29,13 @@ const productsColumns = [
 
 @connect(
     store => ({products: store.product.product}),
-    dispatch => (bindActionCreators({fetchProducts}, dispatch)))
+    dispatch => (bindActionCreators({fetchProducts, deleteProduct}, dispatch)))
 class Database extends Component {
 
     static propTypes = {
         products: PropTypes.array,
-        fetchProducts: PropTypes.func
+        fetchProducts: PropTypes.func,
+        deleteProduct: PropTypes.func
     };
 
     componentWillMount() {
@@ -63,7 +64,8 @@ class Database extends Component {
                             icon: 'delete_forever',
                             tooltip: 'Delete selected',
                             onClick: (event, rows) => {
-                                // TODO: implement deletion
+                                rows.map((row) => this.props.deleteProduct(row.productId))
+                                window.location.reload();
                             },
                         },
                     ]}
