@@ -1,16 +1,12 @@
 package com.etl.etl.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jdk.internal.instrumentation.TypeMapping;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.type.ClobType;
-import org.hibernate.type.StringNVarcharType;
 
 import javax.persistence.*;
-import java.sql.Clob;
 
 @Data
 @Entity
