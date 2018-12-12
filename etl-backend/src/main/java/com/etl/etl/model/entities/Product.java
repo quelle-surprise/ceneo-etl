@@ -1,16 +1,24 @@
 package com.etl.etl.model.entities;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.NoArgsConstructor;
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="products")
+@Table(name = "products")
 @JsonAutoDetect
 @NoArgsConstructor
 public class Product {
@@ -24,7 +32,7 @@ public class Product {
     private String lowestPrice;
     @Column
     private String category;
-    @OneToMany (mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     @JsonManagedReference
     private Set<Review> reviews;

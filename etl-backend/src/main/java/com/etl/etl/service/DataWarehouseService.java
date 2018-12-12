@@ -1,13 +1,8 @@
 package com.etl.etl.service;
 
-import com.etl.etl.model.entities.Product;
-import com.etl.etl.model.entities.Review;
-import org.jsoup.select.Elements;
 import org.springframework.http.ResponseEntity;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Set;
+import com.etl.etl.model.entities.Product;
 
 public interface DataWarehouseService {
 
@@ -16,6 +11,8 @@ public interface DataWarehouseService {
     Product getProductById(Integer productId);
 
     void deleteProduct(Integer productId);
+
+    void deleteReview(Integer id);
 
     void deleteAllProducts();
 

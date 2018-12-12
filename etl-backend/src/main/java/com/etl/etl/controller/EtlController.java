@@ -1,10 +1,8 @@
 package com.etl.etl.controller;
 
 
-import com.etl.etl.model.dao.ProductDAO;
-import com.etl.etl.model.dao.ReviewDAO;
-import com.etl.etl.model.entities.Review;
-import com.etl.etl.service.DataWarehouseService;
+import java.io.IOException;
+import java.util.Set;
 
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Set;
-
-import com.etl.etl.model.entities.Product;
-import com.etl.etl.service.DataWarehouseServiceImpl;
-
 import org.springframework.web.client.HttpServerErrorException;
+
+import com.etl.etl.model.dao.ProductDAO;
+import com.etl.etl.model.dao.ReviewDAO;
+import com.etl.etl.model.entities.Product;
+import com.etl.etl.model.entities.Review;
+import com.etl.etl.service.DataWarehouseServiceImpl;
 
 @RestController
 @CrossOrigin
@@ -63,6 +59,11 @@ public class EtlController {
     @RequestMapping(value = "/product/delete/{productId}", method = RequestMethod.DELETE)
     public void deleteProduct(@PathVariable Integer productId) {
         dataWarehouseServiceImpl.deleteProduct(productId);
+    }
+
+    @RequestMapping(value = "/review/delete/{id}", method = RequestMethod.DELETE)
+    public void deleteReview(@PathVariable Integer id) {
+        dataWarehouseServiceImpl.deleteReview(id);
     }
 
     @RequestMapping(value = "/product/delete", method = RequestMethod.DELETE)
