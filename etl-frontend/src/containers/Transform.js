@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import PropTypes from "prop-types";
-import {loadProduct, transformProduct} from "../actions/product-actions";
+import {loadProduct, transformProduct} from "../actions/etl-actions";
 import MaterialTable from "material-table";
 import {Paper, Typography} from "@material-ui/core/index";
 import {LinearProgress} from "@material-ui/core/es/index";

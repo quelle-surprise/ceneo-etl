@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {addProduct, extractProduct} from "../actions/product-actions";
+import {addProduct, extractProduct} from "../actions/etl-actions";
 import PropTypes from "prop-types";
 import {FormControl, TextField} from "@material-ui/core/index";
 import {TextButton} from "../components/common/TextButton";

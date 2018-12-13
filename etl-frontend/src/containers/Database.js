@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {fetchProducts, deleteProduct} from "../actions/product-actions";
+import {deleteProduct, fetchProducts} from "../actions/product-actions";
 import PropTypes from "prop-types";
 import MaterialTable from 'material-table';
 import IconButton from "@material-ui/core/IconButton";
 import RateReview from "@material-ui/icons/RateReview";
 import {LinearProgress} from "@material-ui/core/index";
-import {REVIEWS_URL} from "../utils/routes";
 
 const productsColumns = [
     {title: 'ID', field: 'productId'},
@@ -48,31 +47,33 @@ class Database extends Component {
 
         return (
             products ?
-                <MaterialTable
-                    columns={productsColumns}
-                    data={products}
-                    title="Products"
-                    options={{
-                        columnsButton: true,
-                        exportButton: true,
-                        selection: true,
-                        filtering: true,
-                        pageSize: 8
-                    }}
-                    actions={[
-                        {
-                            icon: 'delete_forever',
-                            tooltip: 'Delete selected',
-                            onClick: (event, rows) => {
-                                rows.map((row) => this.props.deleteProduct(row.productId))
-                                window.location.reload();
+                <div>
+                    <MaterialTable
+                        columns={productsColumns}
+                        data={products}
+                        title="Products"
+                        options={{
+                            columnsButton: true,
+                            exportButton: true,
+                            selection: true,
+                            filtering: true,
+                            pageSize: 8
+                        }}
+                        actions={[
+                            {
+                                icon: 'delete_forever',
+                                tooltip: 'Delete selected',
+                                onClick: (event, rows) => {
+                                    rows.map((row) => this.props.deleteProduct(row.productId));
+                                    window.location.reload(false)
+                                },
                             },
-                        },
-                    ]}
-                    localization={{
-                        actions: 'Reviews'
-                    }}
-                /> : <LinearProgress/>
+                        ]}
+                        localization={{
+                            actions: 'Reviews'
+                        }}
+                    />
+                </div> : <LinearProgress/>
         );
     }
 }
