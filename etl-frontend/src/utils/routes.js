@@ -17,8 +17,8 @@ export default function createRoutes() {
         <Switch>
             <Route exact path={HOME_URL} component={Home}/>
             <Route exact path={DATABASE_URL} component={Database}/>
-            <Route path='/:id' component={ReviewsTable}/>
             <Route exact path={TRANSFORM_URL} component={Transform}/>
+            <Route path='/:id' component={ReviewsTable}/>
         </Switch>
     )
 }
