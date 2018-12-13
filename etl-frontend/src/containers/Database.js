@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {fetchProducts} from "../actions/product-actions";
+import {deleteProduct, fetchProducts} from "../actions/product-actions";
 import PropTypes from "prop-types";
 import MaterialTable from 'material-table';
 import IconButton from "@material-ui/core/IconButton";
@@ -18,8 +18,7 @@ const productsColumns = [
         field: 'successScore',
         render: rowData => {
             return (
-                // TODO: Go to reviews table for rowData.productId
-                <IconButton>
+                <IconButton href={rowData.productId}>
                     <RateReview/>
                 </IconButton>
             )
@@ -29,12 +28,13 @@ const productsColumns = [
 
 @connect(
     store => ({products: store.product.product}),
-    dispatch => (bindActionCreators({fetchProducts}, dispatch)))
+    dispatch => (bindActionCreators({fetchProducts, deleteProduct}, dispatch)))
 class Database extends Component {
 
     static propTypes = {
         products: PropTypes.array,
-        fetchProducts: PropTypes.func
+        fetchProducts: PropTypes.func,
+        deleteProduct: PropTypes.func
     };
 
     componentWillMount() {
@@ -47,30 +47,33 @@ class Database extends Component {
 
         return (
             products ?
-                <MaterialTable
-                    columns={productsColumns}
-                    data={products}
-                    title="Products"
-                    options={{
-                        columnsButton: true,
-                        exportButton: true,
-                        selection: true,
-                        filtering: true,
-                        pageSize: 8
-                    }}
-                    actions={[
-                        {
-                            icon: 'delete_forever',
-                            tooltip: 'Delete selected',
-                            onClick: (event, rows) => {
-                                // TODO: implement deletion
+                <div>
+                    <MaterialTable
+                        columns={productsColumns}
+                        data={products}
+                        title="Products"
+                        options={{
+                            columnsButton: true,
+                            exportButton: true,
+                            selection: true,
+                            filtering: true,
+                            pageSize: 8
+                        }}
+                        actions={[
+                            {
+                                icon: 'delete_forever',
+                                tooltip: 'Delete selected',
+                                onClick: (event, rows) => {
+                                    rows.map((row) => this.props.deleteProduct(row.productId));
+                                    window.location.reload(false)
+                                },
                             },
-                        },
-                    ]}
-                    localization={{
-                        actions: 'Reviews'
-                    }}
-                /> : <LinearProgress/>
+                        ]}
+                        localization={{
+                            actions: 'Reviews'
+                        }}
+                    />
+                </div> : <LinearProgress/>
         );
     }
 }

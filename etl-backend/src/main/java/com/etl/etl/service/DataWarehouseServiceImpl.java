@@ -1,27 +1,28 @@
 package com.etl.etl.service;
 
-import com.etl.etl.model.dao.ProductDAO;
-import com.etl.etl.model.dao.ReviewDAO;
-import com.etl.etl.model.entities.Product;
-import com.etl.etl.model.entities.Review;
-import com.etl.etl.model.repository.ProductRepository;
+import java.util.Set;
+import java.util.logging.Logger;
+
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import org.springframework.web.client.HttpServerErrorException;
 
-
-import java.util.Set;
-import java.util.logging.Logger;
+import com.etl.etl.model.dao.ProductDAO;
+import com.etl.etl.model.dao.ReviewDAO;
+import com.etl.etl.model.entities.Product;
+import com.etl.etl.model.entities.Review;
+import com.etl.etl.model.repository.ProductRepository;
+import com.etl.etl.model.repository.ReviewRepository;
 
 
 @Service
 public class DataWarehouseServiceImpl implements DataWarehouseService {
     private final Logger LOG = Logger.getLogger(getClass().getName());
     private final ProductRepository productRepository;
+    private final ReviewRepository reviewRepository;
     private Elements extractedProductData = null;
     private Elements extractedReviewData = null;
     private Product transformedProductData = null;
@@ -32,8 +33,9 @@ public class DataWarehouseServiceImpl implements DataWarehouseService {
     @Autowired
     ReviewDAO reviewDAO;
 
-    public DataWarehouseServiceImpl(ProductRepository productRepository) {
+    public DataWarehouseServiceImpl(ProductRepository productRepository, ReviewRepository reviewRepository) {
         this.productRepository = productRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     @Override
@@ -53,6 +55,11 @@ public class DataWarehouseServiceImpl implements DataWarehouseService {
     @Override
     public void deleteProduct(Integer productId) {
         productRepository.deleteById(productId);
+    }
+
+    @Override
+    public void deleteReview(Integer id) {
+        reviewRepository.deleteById(id);
     }
 
     @Override
@@ -110,6 +117,7 @@ public class DataWarehouseServiceImpl implements DataWarehouseService {
         transformedProductData.setReviews(transformedReviewData);
         return new ResponseEntity<>(transformedProductData, HttpStatus.OK);
     }
+
     @Override
     public ResponseEntity<String> loadData() {
         LOG.info("Transformed product data:" + transformedProductData);

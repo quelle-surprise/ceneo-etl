@@ -1,20 +1,19 @@
 package com.etl.etl.model.dao;
 
-import com.etl.etl.model.entities.Product;
-import com.etl.etl.model.entities.Review;
-import com.etl.etl.model.repository.ProductRepository;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import com.etl.etl.model.entities.Product;
+import com.etl.etl.model.entities.Review;
+import com.etl.etl.model.repository.ProductRepository;
 
 
 @Component
@@ -52,7 +51,7 @@ public class ProductDAO {
     }
 
     public Product loadProductData(Product transformedProductData, Set<Review> transformedReviewData) {
-        for(Review review: transformedReviewData) {
+        for (Review review : transformedReviewData) {
             transformedProductData.getReviews().add(review);
         }
         return productRepository.save(transformedProductData);
