@@ -57,8 +57,8 @@ class ReviewsTable extends React.PureComponent {
     }
 
     renderReviewsTable() {
-        this.refreshTable();
         const {product: {reviews}} = this.props;
+        this.refreshTable();
 
         return (
             <MaterialTable
@@ -77,9 +77,12 @@ class ReviewsTable extends React.PureComponent {
                         icon: 'delete_forever',
                         tooltip: 'Delete selected',
                         onClick: (event, rows) => {
-                            rows.map(row => {
-                                this.handleRemove(row);
+                            rows.forEach(row => {
+                                this.props.deleteReview(row.id, DELETE_REVIEW_ACTION_ID);
                             });
+                            this.setState({
+                                refresh: true
+                            })
                         }
                     },
 
@@ -90,14 +93,6 @@ class ReviewsTable extends React.PureComponent {
             />
         )
 
-    }
-
-    handleRemove(row) {
-        this.props.deleteReview(row.id, DELETE_REVIEW_ACTION_ID);
-
-        this.setState({
-            refresh: true
-        })
     }
 
     refreshTable() {
