@@ -10,14 +10,16 @@ import {deleteReview} from "../actions/review-actions";
 const DELETE_REVIEW_ACTION_ID = 'delete.review.action.id';
 
 const reviewsColumns = [
-    {title: 'ID', field: 'id'},
     {title: 'Content', field: 'reviewContent'},
     {title: 'Username', field: 'nameOfReviewer'},
     {title: 'Score', field: 'reviewScore'},
 ];
 
 @connect(
-    store => ({product: store.product.product, requestResult: store.api.requestResult}),
+    store => ({
+        product: store.product.product,
+        requestResult: store.api.requestResult
+    }),
     dispatch => (bindActionCreators({fetchProduct, deleteReview}, dispatch)))
 class ReviewsTable extends React.PureComponent {
 

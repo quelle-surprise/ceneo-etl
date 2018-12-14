@@ -10,12 +10,16 @@ import Form from "../components/home/Form";
 import Image from "../components/home/Image";
 import {PopUp} from "../components/common/PopUp";
 import {TRANSFORM_URL} from "../utils/routes";
+import LinearProgress from "@material-ui/core/LinearProgress/LinearProgress";
 
 const ADD_PRODUCT_ACTION_ID = 'add.product.action.id';
 const EXTRACT_PRODUCT_ACTION_ID = 'extract.product.action.id';
 
 @connect(
-    store => ({requestResult: store.api.requestResult}),
+    store => ({
+        requestResult: store.api.requestResult,
+        isFetching: store.api.isFetching
+    }),
     dispatch => (bindActionCreators({addProduct, extractProduct}, dispatch)))
 class Home extends Component {
 
@@ -24,6 +28,7 @@ class Home extends Component {
         products: PropTypes.array,
         addProduct: PropTypes.func,
         extractProduct: PropTypes.func,
+        isFetching: PropTypes.bool
     };
 
     componentWillReceiveProps(nextProps) {
@@ -48,31 +53,36 @@ class Home extends Component {
 
     render() {
         const {productId} = this.state;
-        const {addProduct, extractProduct} = this.props;
+        const {addProduct, extractProduct, isFetching} = this.props;
 
         return (
-            <Wrapper>
-                <Form>
-                    <Image src="../../static/assets/Home.jpg"/>
-                    <FormControl>
-                        <TextField
-                            value={productId}
-                            name="productId"
-                            label="Product ID"
-                            margin="normal"
-                            onChange={this.handleFieldChange.bind(this)}
-                        />
-                        <div>
-                            <TextButton
-                                onClick={() => addProduct(productId, ADD_PRODUCT_ACTION_ID)}>ETL</TextButton>
-                            <TextButton onClick={() => extractProduct(productId, EXTRACT_PRODUCT_ACTION_ID)}
-                                        color="secondary">Extract</TextButton>
-                        </div>
-                    </FormControl>
-                </Form>
-                {this.state.openErrorPopUp && this.renderErrorPopUp()}
-                {this.state.openSuccessPopUp && this.renderSuccessPopUp()}
-            </Wrapper>
+            <React.Fragment>
+                {isFetching && <LinearProgress/>}
+                <Wrapper>
+                    <Form>
+                        <Image src="../../static/assets/Home.jpg"/>
+                        <FormControl>
+                            <TextField
+                                value={productId}
+                                name="productId"
+                                label="Product ID"
+                                margin="normal"
+                                onChange={this.handleFieldChange.bind(this)}
+                            />
+                            <div>
+                                <TextButton
+                                    onClick={() => addProduct(productId, ADD_PRODUCT_ACTION_ID)}
+                                    disabled={isFetching}>ETL</TextButton>
+                                <TextButton onClick={() => extractProduct(productId, EXTRACT_PRODUCT_ACTION_ID)}
+                                            disabled={isFetching}
+                                            color="secondary">Extract</TextButton>
+                            </div>
+                        </FormControl>
+                    </Form>
+                    {this.state.openErrorPopUp && this.renderErrorPopUp()}
+                    {this.state.openSuccessPopUp && this.renderSuccessPopUp()}
+                </Wrapper>
+            </React.Fragment>
         );
     }
 

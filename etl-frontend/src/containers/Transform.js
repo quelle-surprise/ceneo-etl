@@ -25,14 +25,19 @@ const ProductDetails = styled(Paper)({
 const LOAD_PRODUCT_ACTION_ID = 'load.product.action.id';
 
 @connect(
-    store => ({product: store.product.product, requestResult: store.api.requestResult}),
+    store => ({
+        product: store.product.product,
+        requestResult: store.api.requestResult,
+        isFetching: store.api.isFetching
+    }),
     dispatch => (bindActionCreators({transformProduct, loadProduct}, dispatch)))
 class Transform extends Component {
 
     static propTypes = {
         product: PropTypes.object,
         transformProduct: PropTypes.func,
-        loadProduct: PropTypes.func
+        loadProduct: PropTypes.func,
+        isFetching: PropTypes.bool
     };
 
     state = {
@@ -59,22 +64,26 @@ class Transform extends Component {
 
         return (
             product ?
-                <ProductDetails>
-                    <Typography variant="h6" paragraph>{product.productName}</Typography>
-                    <Typography variant="subtitle2"
-                                paragraph>{product.productId} | {product.lowestPrice} zł</Typography>
-                    <Typography variant="subtitle2" paragraph>{product.category}</Typography>
-                    <TextButton onClick={() => loadProduct(LOAD_PRODUCT_ACTION_ID)}>Load</TextButton>
-                    <MaterialTable
-                        columns={reviewsColumns}
-                        data={product.reviews}
-                        title="Reviews"
-                        options={{
-                            pageSize: 8
-                        }}
-                    />
-                    {this.state.openPopUp && this.renderPopUp()}
-                </ProductDetails>
+                <React.Fragment>
+                    {this.props.isFetching && <LinearProgress/>}
+                    <ProductDetails>
+                        <Typography variant="h6" paragraph>{product.productName}</Typography>
+                        <Typography variant="subtitle2"
+                                    paragraph>{product.productId} | {product.lowestPrice} zł</Typography>
+                        <Typography variant="subtitle2" paragraph>{product.category}</Typography>
+                        <TextButton onClick={() => loadProduct(LOAD_PRODUCT_ACTION_ID)}
+                                    disabled={this.props.isFetching}>Load</TextButton>
+                        <MaterialTable
+                            columns={reviewsColumns}
+                            data={product.reviews}
+                            title="Reviews"
+                            options={{
+                                pageSize: 8
+                            }}
+                        />
+                        {this.state.openPopUp && this.renderPopUp()}
+                    </ProductDetails>
+                </React.Fragment>
                 : <LinearProgress/>
         );
     }

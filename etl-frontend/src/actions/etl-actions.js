@@ -1,10 +1,13 @@
 import axios from "axios";
-import {API_ERROR, API_SUCCESS, TRANSFORM_PRODUCT_SUCCESS} from "./types";
+import {API_ERROR, API_SUCCESS, REQUEST_API, TRANSFORM_PRODUCT_SUCCESS} from "./types";
 import {EXTRACT_ENDPOINT, LOAD_ENDPOINT, PRODUCT_ENDPOINT, TRANSFORM_ENDPOINT} from "../config/data-properties";
 
+const requestApi = () => ({type: REQUEST_API});
+
 export function addProduct(productId, actionId) {
-    return dispatch =>
-        axios.get(`${PRODUCT_ENDPOINT}/${productId}`)
+    return dispatch => {
+        dispatch(requestApi());
+        return axios.get(`${PRODUCT_ENDPOINT}/${productId}`)
             .then(response => dispatch({
                 type: API_SUCCESS,
                 actionId: actionId,
@@ -20,11 +23,13 @@ export function addProduct(productId, actionId) {
                     message: 'Unable to add product. Make sure that provided ID is correct and item is not already in our database'
                 }
             }))
+    };
 }
 
 export function extractProduct(productId, actionId) {
-    return dispatch =>
-        axios.get(`${EXTRACT_ENDPOINT}/${productId}`)
+    return dispatch => {
+        dispatch(requestApi());
+        return axios.get(`${EXTRACT_ENDPOINT}/${productId}`)
             .then(response => dispatch({
                 type: API_SUCCESS,
                 actionId: actionId,
@@ -39,6 +44,8 @@ export function extractProduct(productId, actionId) {
                     message: 'Unable to extract product. Make sure that provided ID is correct and item is not already in our database'
                 }
             }))
+    }
+
 }
 
 export function transformProduct(productId, actionId) {
