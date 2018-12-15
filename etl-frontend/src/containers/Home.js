@@ -94,13 +94,13 @@ class Home extends Component {
     }
 
     renderErrorPopUp() {
-        const {requestResult} = this.props;
         return (
             <PopUp
                 openPopUp={this.state.openErrorPopUp}
                 onPopUpClose={this.handlePopUpClose}
-                title="ERROR ☹️"
-                content={requestResult.message}
+                title="ERROR️"
+                content={"Unable to get product. Make sure that provided ID " +
+                "is correct and item is not already in our database "}
             />
         )
     }
@@ -114,16 +114,17 @@ class Home extends Component {
                     <PopUp
                         openPopUp={this.state.openSuccessPopUp}
                         onPopUpClose={this.handlePopUpClose}
-                        title="SUCCESS 🥳"
-                        content={"Added 1 item with " + requestResult.data.reviews.length + " reviews"}
+                        title="SUCCESS"
+                        content={"Added 1 product with reviews count: " + requestResult.data.reviews.length}
                     />
                 );
             case EXTRACT_PRODUCT_ACTION_ID:
                 return (
                     <PopUp
                         openPopUp={this.state.openSuccessPopUp}
-                        title="SUCCESS 🥳"
-                        content={requestResult.message}
+                        title="SUCCESS"
+                        content={"Extracted 1 product. You can now transform " +
+                        "acquired html to object with product details."}
                         buttonLabel="Transform"
                         buttonRedirect={TRANSFORM_URL}
                     />

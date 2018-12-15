@@ -4,23 +4,18 @@ import {bindActionCreators} from "redux";
 import PropTypes from "prop-types";
 import {loadProduct, transformProduct} from "../actions/etl-actions";
 import MaterialTable from "material-table";
-import {Paper, Typography} from "@material-ui/core/index";
+import {Typography} from "@material-ui/core/index";
 import {LinearProgress} from "@material-ui/core/es/index";
 import {TextButton} from "../components/common/TextButton";
-import styled from "@material-ui/styles/es/styled";
 import {DATABASE_URL} from "../utils/routes";
 import {PopUp} from "../components/common/PopUp";
+import {Details} from "../components/home/Details";
 
 const reviewsColumns = [
     {title: 'Review content', field: 'reviewContent'},
     {title: 'Name of reviewer', field: 'nameOfReviewer'},
     {title: 'Score', field: 'reviewScore'},
 ];
-
-const ProductDetails = styled(Paper)({
-    textAlign: 'center',
-    paddingTop: '30px'
-});
 
 const LOAD_PRODUCT_ACTION_ID = 'load.product.action.id';
 
@@ -66,11 +61,13 @@ class Transform extends Component {
             product ?
                 <React.Fragment>
                     {this.props.isFetching && <LinearProgress/>}
-                    <ProductDetails>
+                    <Details>
                         <Typography variant="h6" paragraph>{product.productName}</Typography>
                         <Typography variant="subtitle2"
-                                    paragraph>{product.productId} | {product.lowestPrice} zł</Typography>
-                        <Typography variant="subtitle2" paragraph>{product.category}</Typography>
+                                    paragraph>ID: {product.productId}</Typography>
+                        <Typography variant="subtitle2"
+                                    paragraph> Lowest price: {product.lowestPrice} zł</Typography>
+                        <Typography variant="subtitle2" paragraph>Categories: {product.category}</Typography>
                         <TextButton onClick={() => loadProduct(LOAD_PRODUCT_ACTION_ID)}
                                     disabled={this.props.isFetching}>Load</TextButton>
                         <MaterialTable
@@ -78,11 +75,11 @@ class Transform extends Component {
                             data={product.reviews}
                             title="Reviews"
                             options={{
-                                pageSize: 8
+                                pageSize: 10
                             }}
                         />
                         {this.state.openPopUp && this.renderPopUp()}
-                    </ProductDetails>
+                    </Details>
                 </React.Fragment>
                 : <LinearProgress/>
         );
@@ -93,8 +90,8 @@ class Transform extends Component {
         return (
             <PopUp
                 openPopUp={this.state.openPopUp}
-                title="SUCCESS 🎉"
-                content={"Added 1 product with " + reviews.length + " reviews"}
+                title="SUCCESS"
+                content={"Added 1 product with reviews count:  " + reviews.length}
                 buttonLabel="Database"
                 buttonRedirect={DATABASE_URL}
             />

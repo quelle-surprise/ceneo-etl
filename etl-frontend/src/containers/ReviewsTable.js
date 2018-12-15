@@ -6,10 +6,13 @@ import PropTypes from "prop-types";
 import MaterialTable from 'material-table';
 import {LinearProgress} from "@material-ui/core/index";
 import {deleteReview} from "../actions/review-actions";
+import {Details} from "../components/home/Details";
+import Typography from "@material-ui/core/Typography/Typography";
 
 const DELETE_REVIEW_ACTION_ID = 'delete.review.action.id';
 
 const reviewsColumns = [
+    {title: 'ID', field: 'id'},
     {title: 'Content', field: 'reviewContent'},
     {title: 'Username', field: 'nameOfReviewer'},
     {title: 'Score', field: 'reviewScore'},
@@ -26,12 +29,14 @@ class ReviewsTable extends React.PureComponent {
     static propTypes = {
         product: PropTypes.array,
         fetchProduct: PropTypes.func,
-        deleteReview: PropTypes.func
+        deleteReview: PropTypes.func,
+        requestResult: PropTypes.object
     };
 
     state = {
         productId: null,
-        refresh: false
+        refresh: false,
+        rows: null,
     };
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -44,55 +49,66 @@ class ReviewsTable extends React.PureComponent {
                 refresh: true
             };
         }
-
         return null
 
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.requestResult !== prevProps.requestResult) {
+            this.setState({
+                refresh: true
+            });
+        }
+    }
+
     render() {
-        this.refreshTable();
         const {product} = this.props;
+        this.refreshTable();
 
         return (
             product ? this.renderReviewsTable() : <LinearProgress/>
         );
+
     }
 
     renderReviewsTable() {
-        const {product: {reviews}} = this.props;
         this.refreshTable();
+        const {product} = this.props;
 
         return (
-            <MaterialTable
-                columns={reviewsColumns}
-                data={reviews}
-                title="Reviews"
-                options={{
-                    columnsButton: true,
-                    exportButton: true,
-                    selection: true,
-                    filtering: true,
-                    pageSize: 8,
-                }}
-                actions={[
-                    {
-                        icon: 'delete_forever',
-                        tooltip: 'Delete selected',
-                        onClick: (event, rows) => {
-                            rows.forEach(row => {
-                                this.props.deleteReview(row.id, DELETE_REVIEW_ACTION_ID);
-                            });
-                            this.setState({
-                                refresh: true
-                            })
-                        }
-                    },
+            <Details>
+                {this.refreshTable()}
+                <Typography variant="h6" paragraph> Reviews for product with ID: {product.productId}</Typography>
+                <MaterialTable
+                    columns={reviewsColumns}
+                    data={product.reviews}
+                    title="Reviews"
+                    options={{
+                        columnsButton: true,
+                        exportButton: true,
+                        selection: true,
+                        filtering: true,
+                        pageSize: 8,
+                    }}
+                    actions={[
+                        {
+                            icon: 'delete_forever',
+                            tooltip: 'Delete selected',
+                            onClick: (event, rows) => {
+                                rows.forEach(row => {
+                                    this.props.deleteReview(row.id, DELETE_REVIEW_ACTION_ID);
+                                });
+                            }
+                        },
 
-                ]}
-                localization={{
-                    actions: 'Reviews'
-                }}
-            />
+                    ]}
+                    localization={{
+                        actions: 'Reviews'
+                    }}
+                />
+                {this.refreshTable()}
+            </Details>
+
         )
 
     }

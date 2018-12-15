@@ -1,17 +1,17 @@
 import axios from "axios";
 import {
-    API_ERROR,
-    API_SUCCESS,
+    errorApi,
     FETCH_PRODUCT_DETAILS_ERROR,
     FETCH_PRODUCT_DETAILS_SUCCESS,
     FETCH_PRODUCTS_DETAILS_ERROR,
-    FETCH_PRODUCTS_DETAILS_SUCCESS
+    FETCH_PRODUCTS_DETAILS_SUCCESS,
+    successApi
 } from "./types";
-import {DELETE_PRODUCT_ENDPOINT, GET_PRODUCT_ENDPOINT, PRODUCTS_ENDPOINT} from "../config/data-properties";
+import {BACKEND_URL, DELETE_PRODUCT_ENDPOINT, GET_PRODUCT_ENDPOINT, PRODUCTS_ENDPOINT} from "../config/data-properties";
 
 export function fetchProducts() {
     return dispatch =>
-        axios.get(`${PRODUCTS_ENDPOINT}`)
+        axios.get(`${BACKEND_URL}${PRODUCTS_ENDPOINT}`)
             .then(response => dispatch({
                 type: FETCH_PRODUCTS_DETAILS_SUCCESS,
                 payload: response.data
@@ -23,7 +23,7 @@ export function fetchProducts() {
 
 export function fetchProduct(productId) {
     return dispatch =>
-        axios.get(`${GET_PRODUCT_ENDPOINT}/${productId}`)
+        axios.get(`${BACKEND_URL}${GET_PRODUCT_ENDPOINT}/${productId}`)
             .then(response => dispatch({
                 type: FETCH_PRODUCT_DETAILS_SUCCESS,
                 payload: response.data
@@ -35,19 +35,10 @@ export function fetchProduct(productId) {
 
 export function deleteProduct(productId, actionId) {
     return dispatch =>
-        axios.delete(`${DELETE_PRODUCT_ENDPOINT}/${productId}`)
-            .then(response => dispatch({
-                type: API_SUCCESS,
-                actionId: actionId,
-                payload: {
-                    message: "Successfully deleted product",
-                }
-            }))
-            .catch(error => dispatch({
-                type: API_ERROR,
-                actionId: actionId,
-                payload: {
-                    message: 'Unable to delete product. Make sure that provided ID is correct and item is already in our database'
-                }
-            }))
+        axios.delete(`${BACKEND_URL}${DELETE_PRODUCT_ENDPOINT}/${productId}`)
+            .then(response => dispatch(
+                successApi(actionId, 'Successfully deleted product')
+            ))
+            .catch(error => dispatch(
+                errorApi(actionId, 'Unable to delete product.')))
 }
