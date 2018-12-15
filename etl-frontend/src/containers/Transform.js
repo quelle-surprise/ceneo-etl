@@ -4,12 +4,12 @@ import {bindActionCreators} from "redux";
 import PropTypes from "prop-types";
 import {loadProduct, transformProduct} from "../actions/etl-actions";
 import MaterialTable from "material-table";
-import {Paper, Typography} from "@material-ui/core/index";
+import {Typography} from "@material-ui/core/index";
 import {LinearProgress} from "@material-ui/core/es/index";
 import {TextButton} from "../components/common/TextButton";
-import styled from "@material-ui/styles/es/styled";
 import {DATABASE_URL} from "../utils/routes";
 import {PopUp} from "../components/common/PopUp";
+import {Details} from "../components/home/Details";
 
 const reviewsColumns = [
     {title: 'Review content', field: 'reviewContent'},
@@ -17,22 +17,22 @@ const reviewsColumns = [
     {title: 'Score', field: 'reviewScore'},
 ];
 
-const ProductDetails = styled(Paper)({
-    textAlign: 'center',
-    paddingTop: '30px'
-});
-
 const LOAD_PRODUCT_ACTION_ID = 'load.product.action.id';
 
 @connect(
-    store => ({product: store.product.product, requestResult: store.api.requestResult}),
+    store => ({
+        product: store.product.product,
+        requestResult: store.api.requestResult,
+        isFetching: store.api.isFetching
+    }),
     dispatch => (bindActionCreators({transformProduct, loadProduct}, dispatch)))
 class Transform extends Component {
 
     static propTypes = {
         product: PropTypes.object,
         transformProduct: PropTypes.func,
-        loadProduct: PropTypes.func
+        loadProduct: PropTypes.func,
+        isFetching: PropTypes.bool
     };
 
     state = {
@@ -59,22 +59,28 @@ class Transform extends Component {
 
         return (
             product ?
-                <ProductDetails>
-                    <Typography variant="h6" paragraph>{product.productName}</Typography>
-                    <Typography variant="subtitle2"
-                                paragraph>{product.productId} | {product.lowestPrice} zł</Typography>
-                    <Typography variant="subtitle2" paragraph>{product.category}</Typography>
-                    <TextButton onClick={() => loadProduct(LOAD_PRODUCT_ACTION_ID)}>Load</TextButton>
-                    <MaterialTable
-                        columns={reviewsColumns}
-                        data={product.reviews}
-                        title="Reviews"
-                        options={{
-                            pageSize: 8
-                        }}
-                    />
-                    {this.state.openPopUp && this.renderPopUp()}
-                </ProductDetails>
+                <React.Fragment>
+                    {this.props.isFetching && <LinearProgress/>}
+                    <Details>
+                        <Typography variant="h6" paragraph>{product.productName}</Typography>
+                        <Typography variant="subtitle2"
+                                    paragraph>ID: {product.productId}</Typography>
+                        <Typography variant="subtitle2"
+                                    paragraph> Lowest price: {product.lowestPrice} zł</Typography>
+                        <Typography variant="subtitle2" paragraph>Categories: {product.category}</Typography>
+                        <TextButton onClick={() => loadProduct(LOAD_PRODUCT_ACTION_ID)}
+                                    disabled={this.props.isFetching}>Load</TextButton>
+                        <MaterialTable
+                            columns={reviewsColumns}
+                            data={product.reviews}
+                            title="Reviews"
+                            options={{
+                                pageSize: 10
+                            }}
+                        />
+                        {this.state.openPopUp && this.renderPopUp()}
+                    </Details>
+                </React.Fragment>
                 : <LinearProgress/>
         );
     }
@@ -84,8 +90,8 @@ class Transform extends Component {
         return (
             <PopUp
                 openPopUp={this.state.openPopUp}
-                title="SUCCESS 🎉"
-                content={"Added 1 product with " + reviews.length + " reviews"}
+                title="SUCCESS"
+                content={"Added 1 product with reviews count:  " + reviews.length}
                 buttonLabel="Database"
                 buttonRedirect={DATABASE_URL}
             />

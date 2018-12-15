@@ -1,9 +1,9 @@
 export const BACKEND_URL = "http://localhost:8080/api";
-export const PRODUCTS_ENDPOINT = `${BACKEND_URL}/products`;
-export const PRODUCT_ENDPOINT = `${BACKEND_URL}/etl`;
-export const EXTRACT_ENDPOINT = `${BACKEND_URL}/extract`;
-export const TRANSFORM_ENDPOINT = `${BACKEND_URL}/transform`;
-export const LOAD_ENDPOINT = `${BACKEND_URL}/load`;
-export const DELETE_PRODUCT_ENDPOINT = `${BACKEND_URL}/product/delete`;
-export const GET_PRODUCT_ENDPOINT = `${BACKEND_URL}/product`;
-export const DELETE_REVIEW_ENDPOINT = `${BACKEND_URL}/review/delete`;
+export const PRODUCTS_ENDPOINT = `/products`;
+export const PRODUCT_ENDPOINT = `/etl`;
+export const EXTRACT_ENDPOINT = `/extract`;
+export const TRANSFORM_ENDPOINT = `/transform`;
+export const LOAD_ENDPOINT = `/load`;
+export const DELETE_PRODUCT_ENDPOINT = `/product/delete`;
+export const GET_PRODUCT_ENDPOINT = `/product`;
+export const DELETE_REVIEW_ENDPOINT = `/review/delete`;
