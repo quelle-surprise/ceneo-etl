@@ -44,7 +44,6 @@ public class EtlController {
         return dataWarehouseServiceImpl.getProductById(productId);
     }
 
-    //TODO : To improve
     @RequestMapping(value = "/etl/{productId}", method = RequestMethod.GET)
     public ResponseEntity<Product> entireEtlProcess(@PathVariable Integer productId) throws IOException {
         if (dataWarehouseServiceImpl.productExist(productId))

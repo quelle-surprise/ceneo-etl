@@ -111,9 +111,6 @@ public class DataWarehouseServiceImpl implements DataWarehouseService {
         } else {
             throw new HttpServerErrorException(HttpStatus.CONFLICT, "It looks that there is no data to extract!");
         }
-//        return new ResponseEntity<>("Data has been transformed successfully\n Transformed Product Data: " + transformedProductData.toString()
-//                + "" +
-//                "\n Transformed Review Data: " + transformedReviewData.toString(), HttpStatus.OK);
         transformedProductData.setReviews(transformedReviewData);
         return new ResponseEntity<>(transformedProductData, HttpStatus.OK);
     }
