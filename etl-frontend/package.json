@@ -7,7 +7,7 @@
     "@material-ui/icons": "^3.0.1",
     "@material-ui/styles": "^3.0.0-alpha.0",
     "autoprefixer": "^9.3.1",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "babel-plugin-react-flow-props-to-prop-types": "^0.15.0",
     "css-loader": "^1.0.1",
     "material-table": "^1.7.0",
